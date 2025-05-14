@@ -1,0 +1,1352 @@
+---
+openapi: 3.0.3
+info:
+  title: E-Simulados
+  description: Plataforma de simulados
+  termsOfService: Your terms here
+  contact:
+    name: Vinicius Santana
+    url: https://vsviniciuslima.dev/contact
+    email: vsviniciuslima@gmail.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.1
+tags:
+  - name: Disciplines
+  - name: ExamAttempts
+  - name: Exams
+  - name: Pets
+  - name: Questions
+  - name: Topics
+paths:
+  /disciplines:
+    get:
+      tags:
+        - Disciplines
+      parameters:
+        - name: active
+          in: query
+          schema:
+            type: boolean
+        - name: id
+          in: query
+          schema:
+            format: int64
+            type: integer
+        - name: name
+          in: query
+          schema:
+            type: string
+        - name: namedQuery
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            format: int32
+            default: 0
+            type: integer
+        - name: size
+          in: query
+          schema:
+            format: int32
+            default: 20
+            type: integer
+        - name: sort
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Discipline"
+    post:
+      tags:
+        - Disciplines
+      summary: Criar disciplina
+      requestBody:
+        description: Simulado a ser criado
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDiscipline"
+      responses:
+        "200":
+          description: Disciplina criada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    format: int64
+                    type: integer
+                  name:
+                    type: string
+                  active:
+                    type: boolean
+                  uuid:
+                    $ref: "#/components/schemas/UUID"
+                  createdAt:
+                    $ref: "#/components/schemas/LocalDateTime"
+                  updatedAt:
+                    $ref: "#/components/schemas/LocalDateTime"
+  /disciplines/count:
+    get:
+      tags:
+        - Disciplines
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                format: int64
+                type: integer
+  /disciplines/{id}:
+    get:
+      tags:
+        - Disciplines
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            format: int64
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Discipline"
+    put:
+      tags:
+        - Disciplines
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            format: int64
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Discipline"
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Discipline"
+    delete:
+      tags:
+        - Disciplines
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            format: int64
+            type: integer
+      responses:
+        "204": {}
+  /errors/{id}:
+    get:
+      tags:
+        - Pets
+      summary: Consultar detalhes do erro
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Detalhes do erro
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reason:
+                    type: string
+                  details:
+                    type: string
+                  uuid:
+                    type: string
+  /exam-attempts:
+    get:
+      tags:
+        - ExamAttempts
+      parameters:
+        - name: active
+          in: query
+          schema:
+            type: boolean
+        - name: examId
+          in: query
+          schema:
+            format: int64
+            type: integer
+        - name: examVersion
+          in: query
+          schema:
+            format: int32
+            type: integer
+        - name: id
+          in: query
+          schema:
+            format: int64
+            type: integer
+        - name: namedQuery
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            format: int32
+            default: 0
+            type: integer
+        - name: score
+          in: query
+          schema:
+            format: int32
+            type: integer
+        - name: size
+          in: query
+          schema:
+            format: int32
+            default: 20
+            type: integer
+        - name: sort
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+        - name: userId
+          in: query
+          schema:
+            format: int64
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ExamAttempt"
+    post:
+      tags:
+        - ExamAttempts
+      summary: Tentativa
+      requestBody:
+        description: Simulado a ser criado
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AttemptExamDTO"
+      responses:
+        "200":
+          description: A tentativa de simulado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    format: int64
+                    type: integer
+                  examId:
+                    format: int64
+                    type: integer
+                  userId:
+                    format: int64
+                    type: integer
+                  examVersion:
+                    format: int32
+                    type: integer
+                  score:
+                    format: int32
+                    type: integer
+                  answers:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Answer"
+                  active:
+                    type: boolean
+                  uuid:
+                    $ref: "#/components/schemas/UUID"
+                  createdAt:
+                    $ref: "#/components/schemas/LocalDateTime"
+                  updatedAt:
+                    $ref: "#/components/schemas/LocalDateTime"
+  /exam-attempts/count:
+    get:
+      tags:
+        - ExamAttempts
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                format: int64
+                type: integer
+  /exam-attempts/{id}:
+    get:
+      tags:
+        - ExamAttempts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            format: int64
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExamAttempt"
+    put:
+      tags:
+        - ExamAttempts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            format: int64
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExamAttempt"
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExamAttempt"
+    delete:
+      tags:
+        - ExamAttempts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            format: int64
+            type: integer
+      responses:
+        "204": {}
+  /exams:
+    get:
+      tags:
+        - Exams
+      parameters:
+        - name: active
+          in: query
+          schema:
+            type: boolean
+        - name: author
+          in: query
+          schema:
+            type: string
+        - name: authorId
+          in: query
+          schema:
+            type: string
+        - name: description
+          in: query
+          schema:
+            type: string
+        - name: discipline.id
+          in: query
+          schema:
+            format: int64
+            type: integer
+        - name: id
+          in: query
+          schema:
+            format: int64
+            type: integer
+        - name: imageUrl
+          in: query
+          schema:
+            type: string
+        - name: name
+          in: query
+          schema:
+            type: string
+        - name: namedQuery
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            format: int32
+            default: 0
+            type: integer
+        - name: size
+          in: query
+          schema:
+            format: int32
+            default: 20
+            type: integer
+        - name: sort
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+        - name: topic.id
+          in: query
+          schema:
+            format: int64
+            type: integer
+        - name: version
+          in: query
+          schema:
+            format: int32
+            type: integer
+        - name: year
+          in: query
+          schema:
+            format: int32
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Exam"
+    post:
+      tags:
+        - Exams
+      summary: Criar simulado
+      requestBody:
+        description: Simulado a ser criado
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateExamDTO"
+      responses:
+        "200":
+          description: Simulado criado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    format: int64
+                    type: integer
+                  questions:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Question"
+                  author:
+                    type: string
+                  authorId:
+                    type: string
+                  examType:
+                    $ref: "#/components/schemas/ExamType"
+                  difficulty:
+                    $ref: "#/components/schemas/Difficulty"
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  imageUrl:
+                    type: string
+                  year:
+                    format: int32
+                    type: integer
+                  tags:
+                    type: array
+                    items:
+                      type: string
+                  discipline:
+                    $ref: "#/components/schemas/Discipline"
+                  topic:
+                    $ref: "#/components/schemas/Topic"
+                  version:
+                    format: int32
+                    type: integer
+                  active:
+                    type: boolean
+                  uuid:
+                    $ref: "#/components/schemas/UUID"
+                  createdAt:
+                    $ref: "#/components/schemas/LocalDateTime"
+                  updatedAt:
+                    $ref: "#/components/schemas/LocalDateTime"
+  /exams/count:
+    get:
+      tags:
+        - Exams
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                format: int64
+                type: integer
+  /exams/{examId}/questions:
+    post:
+      tags:
+        - Exams
+      parameters:
+        - name: examId
+          in: path
+          required: true
+          schema:
+            format: int64
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddExamQuestion"
+      responses:
+        "200":
+          description: OK
+  /exams/{id}:
+    get:
+      tags:
+        - Exams
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            format: int64
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Exam"
+    put:
+      tags:
+        - Exams
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            format: int64
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Exam"
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Exam"
+    delete:
+      tags:
+        - Exams
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            format: int64
+            type: integer
+      responses:
+        "204": {}
+  /pets:
+    post:
+      tags:
+        - Pets
+      summary: Cadastrar pet
+      parameters:
+        - name: fail
+          in: query
+          schema:
+            type: boolean
+      requestBody:
+        description: Simulado a ser criado
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePet"
+      responses:
+        "200":
+          description: Pet cadastrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  id:
+                    format: int64
+                    type: integer
+        "400":
+          description: Erro no cadastro
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorId:
+                    type: string
+  /questions:
+    get:
+      tags:
+        - Questions
+      parameters:
+        - name: authorId
+          in: query
+          schema:
+            type: string
+        - name: correctAlternative
+          in: query
+          schema:
+            format: byte
+            type: string
+        - name: discipline.id
+          in: query
+          schema:
+            format: int64
+            type: integer
+        - name: explanation
+          in: query
+          schema:
+            type: string
+        - name: id
+          in: query
+          schema:
+            format: int64
+            type: integer
+        - name: namedQuery
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            format: int32
+            default: 0
+            type: integer
+        - name: size
+          in: query
+          schema:
+            format: int32
+            default: 20
+            type: integer
+        - name: sort
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+        - name: source
+          in: query
+          schema:
+            type: string
+        - name: sourceUrl
+          in: query
+          schema:
+            type: string
+        - name: statement
+          in: query
+          schema:
+            type: string
+        - name: topic.id
+          in: query
+          schema:
+            format: int64
+            type: integer
+        - name: year
+          in: query
+          schema:
+            format: int32
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Question"
+    post:
+      tags:
+        - Questions
+      summary: Criar questão
+      requestBody:
+        description: Lista de presentes a serem criados
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateQuestionDTO"
+      responses:
+        "200":
+          description: Questão criada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    format: int64
+                    type: integer
+                  statement:
+                    type: string
+                  explanation:
+                    type: string
+                  difficulty:
+                    $ref: "#/components/schemas/Difficulty"
+                  examType:
+                    $ref: "#/components/schemas/ExamType"
+                  discipline:
+                    $ref: "#/components/schemas/Discipline"
+                  topic:
+                    $ref: "#/components/schemas/Topic"
+                  year:
+                    format: int32
+                    type: integer
+                  source:
+                    type: string
+                  sourceUrl:
+                    type: string
+                  authorId:
+                    type: string
+                  tags:
+                    type: array
+                    items:
+                      type: string
+                  comments:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Comment"
+                  alternatives:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/QuestionAlternative"
+                  correctAlternative:
+                    format: byte
+                    type: string
+  /questions/count:
+    get:
+      tags:
+        - Questions
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                format: int64
+                type: integer
+  /questions/{id}:
+    get:
+      tags:
+        - Questions
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            format: int64
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Question"
+    put:
+      tags:
+        - Questions
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            format: int64
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Question"
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Question"
+    delete:
+      tags:
+        - Questions
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            format: int64
+            type: integer
+      responses:
+        "204": {}
+  /questions/{id}/comments:
+    post:
+      tags:
+        - Questions
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            format: int64
+            type: integer
+      requestBody:
+        description: Comentário
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCommentDTO"
+      responses:
+        "200":
+          description: OK
+  /questions/{id}/comments/{commentId}:
+    delete:
+      tags:
+        - Questions
+      parameters:
+        - name: commentId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UUID"
+        - name: id
+          in: path
+          required: true
+          schema:
+            format: int64
+            type: integer
+      responses:
+        "200":
+          description: OK
+  /topics:
+    get:
+      tags:
+        - Topics
+      parameters:
+        - name: active
+          in: query
+          schema:
+            type: boolean
+        - name: discipline.id
+          in: query
+          schema:
+            format: int64
+            type: integer
+        - name: id
+          in: query
+          schema:
+            format: int64
+            type: integer
+        - name: name
+          in: query
+          schema:
+            type: string
+        - name: namedQuery
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            format: int32
+            default: 0
+            type: integer
+        - name: size
+          in: query
+          schema:
+            format: int32
+            default: 20
+            type: integer
+        - name: sort
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Topic"
+    post:
+      tags:
+        - Topics
+      requestBody:
+        description: Tópico a ser criado
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTopic"
+      responses:
+        "200":
+          description: OK
+  /topics/count:
+    get:
+      tags:
+        - Topics
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                format: int64
+                type: integer
+  /topics/{id}:
+    get:
+      tags:
+        - Topics
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            format: int64
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Topic"
+    put:
+      tags:
+        - Topics
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            format: int64
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Topic"
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Topic"
+    delete:
+      tags:
+        - Topics
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            format: int64
+            type: integer
+      responses:
+        "204": {}
+components:
+  schemas:
+    AddExamQuestion:
+      type: object
+      properties:
+        questionsIds:
+          type: array
+          items:
+            type: string
+    Answer:
+      type: object
+      properties:
+        questionId:
+          format: int64
+          type: integer
+        alternativeId:
+          format: byte
+          type: string
+    AttemptExamDTO:
+      type: object
+      properties:
+        examId:
+          format: int64
+          type: integer
+        userId:
+          format: int64
+          type: integer
+        answers:
+          type: array
+          items:
+            $ref: "#/components/schemas/Answer"
+    Comment:
+      type: object
+      properties:
+        content:
+          type: string
+        author:
+          type: string
+        authorId:
+          type: string
+        uuid:
+          $ref: "#/components/schemas/UUID"
+        active:
+          type: boolean
+        createdAt:
+          $ref: "#/components/schemas/LocalDateTime"
+        updatedAt:
+          $ref: "#/components/schemas/LocalDateTime"
+    CreateCommentDTO:
+      type: object
+      properties:
+        content:
+          type: string
+        author:
+          type: string
+        authorId:
+          type: string
+    CreateDiscipline:
+      type: object
+      properties:
+        name:
+          type: string
+    CreateExamDTO:
+      required:
+        - examType
+        - name
+        - disciplineId
+        - topicId
+      type: object
+      properties:
+        questionIds:
+          type: array
+          items:
+            type: string
+        author:
+          type: string
+        authorId:
+          type: string
+        examType:
+          $ref: "#/components/schemas/ExamType"
+        difficulty:
+          $ref: "#/components/schemas/Difficulty"
+        name:
+          type: string
+        description:
+          type: string
+        imageUrl:
+          type: string
+        year:
+          format: int32
+          type: integer
+        tags:
+          type: array
+          items:
+            type: string
+        disciplineId:
+          format: int64
+          type: integer
+        topicId:
+          format: int64
+          type: integer
+    CreatePet:
+      type: object
+      properties:
+        name:
+          type: string
+    CreateQuestionAlternativeDTO:
+      required:
+        - content
+      type: object
+      properties:
+        label:
+          type: string
+        content:
+          type: string
+        imageUrls:
+          type: array
+          items:
+            type: string
+    CreateQuestionDTO:
+      required:
+        - statement
+        - difficulty
+        - examType
+        - disciplineId
+        - topicId
+        - questionAlternatives
+        - correctAlternative
+      type: object
+      properties:
+        statement:
+          type: string
+        explanation:
+          type: string
+        difficulty:
+          $ref: "#/components/schemas/Difficulty"
+        examType:
+          $ref: "#/components/schemas/ExamType"
+        disciplineId:
+          format: int64
+          type: integer
+        topicId:
+          format: int64
+          type: integer
+        year:
+          format: int32
+          type: integer
+        source:
+          type: string
+        sourceUrl:
+          type: string
+        authorId:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        questionAlternatives:
+          type: array
+          items:
+            $ref: "#/components/schemas/CreateQuestionAlternativeDTO"
+        correctAlternative:
+          format: byte
+          type: string
+    CreateTopic:
+      type: object
+      properties:
+        name:
+          type: string
+        disciplineId:
+          format: int64
+          type: integer
+    Difficulty:
+      enum:
+        - EASY
+        - MEDIUM
+        - HARD
+      type: string
+    Discipline:
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        name:
+          type: string
+        active:
+          type: boolean
+        uuid:
+          $ref: "#/components/schemas/UUID"
+        createdAt:
+          $ref: "#/components/schemas/LocalDateTime"
+        updatedAt:
+          $ref: "#/components/schemas/LocalDateTime"
+    Exam:
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        questions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Question"
+        author:
+          type: string
+        authorId:
+          type: string
+        examType:
+          $ref: "#/components/schemas/ExamType"
+        difficulty:
+          $ref: "#/components/schemas/Difficulty"
+        name:
+          type: string
+        description:
+          type: string
+        imageUrl:
+          type: string
+        year:
+          format: int32
+          type: integer
+        tags:
+          type: array
+          items:
+            type: string
+        discipline:
+          $ref: "#/components/schemas/Discipline"
+        topic:
+          $ref: "#/components/schemas/Topic"
+        version:
+          format: int32
+          type: integer
+        active:
+          type: boolean
+        uuid:
+          $ref: "#/components/schemas/UUID"
+        createdAt:
+          $ref: "#/components/schemas/LocalDateTime"
+        updatedAt:
+          $ref: "#/components/schemas/LocalDateTime"
+    ExamAttempt:
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        examId:
+          format: int64
+          type: integer
+        userId:
+          format: int64
+          type: integer
+        examVersion:
+          format: int32
+          type: integer
+        score:
+          format: int32
+          type: integer
+        answers:
+          type: array
+          items:
+            $ref: "#/components/schemas/Answer"
+        active:
+          type: boolean
+        uuid:
+          $ref: "#/components/schemas/UUID"
+        createdAt:
+          $ref: "#/components/schemas/LocalDateTime"
+        updatedAt:
+          $ref: "#/components/schemas/LocalDateTime"
+    ExamType:
+      enum:
+        - VESTIBULAR
+        - CONCURSO
+      type: string
+    LocalDateTime:
+      format: date-time
+      type: string
+      example: 2022-03-10T12:15:50
+    Question:
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        statement:
+          type: string
+        explanation:
+          type: string
+        difficulty:
+          $ref: "#/components/schemas/Difficulty"
+        examType:
+          $ref: "#/components/schemas/ExamType"
+        discipline:
+          $ref: "#/components/schemas/Discipline"
+        topic:
+          $ref: "#/components/schemas/Topic"
+        year:
+          format: int32
+          type: integer
+        source:
+          type: string
+        sourceUrl:
+          type: string
+        authorId:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        comments:
+          type: array
+          items:
+            $ref: "#/components/schemas/Comment"
+        alternatives:
+          type: array
+          items:
+            $ref: "#/components/schemas/QuestionAlternative"
+        correctAlternative:
+          format: byte
+          type: string
+    QuestionAlternative:
+      type: object
+      properties:
+        label:
+          type: string
+        imageUrls:
+          type: array
+          items:
+            type: string
+        content:
+          type: string
+    Topic:
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        active:
+          type: boolean
+        uuid:
+          $ref: "#/components/schemas/UUID"
+        createdAt:
+          $ref: "#/components/schemas/LocalDateTime"
+        updatedAt:
+          $ref: "#/components/schemas/LocalDateTime"
+        discipline:
+          $ref: "#/components/schemas/Discipline"
+        name:
+          type: string
+    UUID:
+      format: uuid
+      pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+      type: string

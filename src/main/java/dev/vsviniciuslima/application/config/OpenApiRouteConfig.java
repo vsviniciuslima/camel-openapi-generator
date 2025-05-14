@@ -1,4 +1,4 @@
-package dev.vsviniciuslima.config;
+package dev.vsviniciuslima.application.config;
 
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.rest.RestBindingMode;
@@ -11,7 +11,7 @@ import org.springframework.core.io.Resource;
 import java.nio.charset.StandardCharsets;
 
 @Configuration
-public class CamelConfig {
+public class OpenApiRouteConfig {
 
     @Value("classpath:specs/third-party-api.yaml")
     private Resource openapiSpec;

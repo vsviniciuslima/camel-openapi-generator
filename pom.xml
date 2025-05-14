@@ -12,10 +12,12 @@
   <name>A Camel Spring Boot Route</name>
 
   <properties>
+    <java.version>17</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring.boot-version>2.7.7</spring.boot-version>
-    <surefire.plugin.version>3.0.0-M4</surefire.plugin.version>
+    <spring.boot-version>3.3.7</spring.boot-version>
+    <surefire.plugin.version>3.0.0-M7</surefire.plugin.version>
+    <camel.version>4.4.3</camel.version>
   </properties>
 
   <dependencyManagement>
@@ -32,7 +34,7 @@
       <dependency>
         <groupId>org.apache.camel.springboot</groupId>
         <artifactId>camel-spring-boot-bom</artifactId>
-        <version>3.20.1</version>
+        <version>${camel.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -41,64 +43,37 @@
 
   <dependencies>
 
-    <!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->
-    <dependency>
-      <groupId>com.squareup.okhttp3</groupId>
-      <artifactId>okhttp</artifactId>
-      <version>5.0.0-alpha.14</version>
-    </dependency>
+      <!-- Camel Jackson para processamento JSON -->
+      <dependency>
+          <groupId>org.apache.camel.springboot</groupId>
+          <artifactId>camel-jackson-starter</artifactId>
+      </dependency>
 
-    <!-- Camel OpenAPI -->
-    <dependency>
-      <groupId>org.apache.camel.springboot</groupId>
-      <artifactId>camel-openapi-java-starter</artifactId>
-    </dependency>
-
-    <!-- OpenAPI Generator para criar modelos a partir das especificações -->
-    <dependency>
-      <groupId>org.openapitools</groupId>
-      <artifactId>openapi-generator-maven-plugin</artifactId>
-      <version>6.2.1</version>
-      <scope>provided</scope>
-    </dependency>
-
-    <!-- https://mvnrepository.com/artifact/org.apache.camel/camel-rest-starter -->
-    <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-rest-starter</artifactId>
-      <version>3.0.0-RC3</version>
-    </dependency>
-
-    <!-- Camel Jackson para serialização/deserialização JSON -->
-    <dependency>
-      <groupId>org.apache.camel.springboot</groupId>
-      <artifactId>camel-jackson-starter</artifactId>
-    </dependency>
-
-    <!-- Utilitários -->
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>2.11.0</version>
-    </dependency>
-
-    <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
-    <dependency>
-      <groupId>com.google.code.gson</groupId>
-      <artifactId>gson</artifactId>
-      <version>2.12.1</version>
-    </dependency>
-
-    <!-- Lombok para reduzir código boilerplate (opcional) -->
+    <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>1.18.30</version>
-<!--      <scope>provided</scope>-->
-<!--      <optional>true</optional>-->
+      <version>1.18.38</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.camel.springboot</groupId>
+      <artifactId>camel-http-starter</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-api</artifactId>
+      <version>4.4.3</version>
     </dependency>
 
     <!-- Spring Boot -->
+
+    <dependency>
+      <groupId>org.apache.camel.springboot</groupId>
+      <artifactId>camel-servlet-starter</artifactId>
+<!--      <version>3.7.2</version>-->
+    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
@@ -118,6 +93,35 @@
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
 
+    <!-- Jakarta EE API -->
+    <dependency>
+      <groupId>jakarta.annotation</groupId>
+      <artifactId>jakarta.annotation-api</artifactId>
+    </dependency>
+
+    <!-- OpenAPI Jackson Nullable -->
+    <dependency>
+      <groupId>org.openapitools</groupId>
+      <artifactId>jackson-databind-nullable</artifactId>
+      <version>0.2.6</version>
+    </dependency>
+    <!-- Jackson dependencies managed by Spring Boot -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-jsr310</artifactId>
+    </dependency>
     <!-- Camel -->
     <dependency>
       <groupId>org.apache.camel.springboot</groupId>
@@ -139,47 +143,78 @@
       <artifactId>camel-test-spring-junit5</artifactId>
       <scope>test</scope>
     </dependency>
+    <!-- JUnit 5 (Jupiter) dependencies -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.10.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.10.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.platform</groupId>
+      <artifactId>junit-platform-launcher</artifactId>
+      <version>1.10.0</version>
+      <scope>test</scope>
+    </dependency>
+
+      <!-- outras -->
+      <!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->
+      <dependency>
+          <groupId>com.squareup.okhttp3</groupId>
+          <artifactId>okhttp</artifactId>
+          <version>5.0.0-alpha.14</version>
+      </dependency>
+
+      <!-- Camel OpenAPI -->
+      <dependency>
+          <groupId>org.apache.camel.springboot</groupId>
+          <artifactId>camel-openapi-java-starter</artifactId>
+      </dependency>
+
+      <!-- OpenAPI Generator para criar modelos a partir das especificações -->
+      <dependency>
+          <groupId>org.openapitools</groupId>
+          <artifactId>openapi-generator-maven-plugin</artifactId>
+          <version>6.2.1</version>
+          <scope>provided</scope>
+      </dependency>
+
+      <!-- https://mvnrepository.com/artifact/org.apache.camel/camel-rest-starter -->
+      <dependency>
+          <groupId>org.apache.camel</groupId>
+          <artifactId>camel-rest-starter</artifactId>
+          <version>3.0.0-RC3</version>
+      </dependency>
+
+      <!-- Utilitários -->
+      <dependency>
+          <groupId>commons-io</groupId>
+          <artifactId>commons-io</artifactId>
+          <version>2.11.0</version>
+      </dependency>
+
+      <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+      <dependency>
+          <groupId>com.google.code.gson</groupId>
+          <artifactId>gson</artifactId>
+          <version>2.12.1</version>
+      </dependency>
   </dependencies>
 
   <build>
     <plugins>
       <plugin>
-        <groupId>org.openapitools</groupId>
-        <artifactId>openapi-generator-maven-plugin</artifactId>
-        <version>6.2.1</version>
-        <executions>
-          <execution>
-            <id>generate-api-models</id>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-            <configuration>
-              <inputSpec>${project.basedir}/src/main/resources/specs/third-party-api.yaml</inputSpec>
-              <generatorName>java</generatorName>
-              <configOptions>
-<!--                <additionalModelTypeAnnotations>@lombok.Data @lombok.NoArgsConstructor @lombok.AllArgsConstructor</additionalModelTypeAnnotations>-->
-                <useLombok>true</useLombok>
-                <annotationLibrary>lombok</annotationLibrary>
-                <sourceFolder>src/gen/java</sourceFolder>
-                <dateLibrary>java8</dateLibrary>
-                <hideGenerationTimestamp>true</hideGenerationTimestamp>
-              </configOptions>
-              <modelPackage>dev.vsviniciuslima.model</modelPackage>
-              <apiPackage>dev.vsviniciuslima.api</apiPackage>
-              <generateApiTests>false</generateApiTests>
-              <generateModelTests>false</generateModelTests>
-              <generateApiDocumentation>true</generateApiDocumentation>
-              <generateModelDocumentation>true</generateModelDocumentation>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.10.1</version>
+        <version>3.11.0</version>
         <configuration>
-          <release>11</release>
+          <release>17</release>
         </configuration>
       </plugin>
       <plugin>
@@ -198,6 +233,43 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${surefire.plugin.version}</version>
+      </plugin>
+      <plugin>
+        <groupId>org.openapitools</groupId>
+        <artifactId>openapi-generator-maven-plugin</artifactId>
+        <version>7.12.0</version>
+        <executions>
+          <execution>
+            <id>generate-openapi-client</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <skipValidateSpec>true</skipValidateSpec>
+              <inputSpec>${project.basedir}/src/main/resources/api-core.yaml</inputSpec>
+              <generatorName>java</generatorName>
+              <library>restclient</library>
+              <generateApiTests>false</generateApiTests>
+              <generateModelTests>false</generateModelTests>
+              <generateApiDocumentation>false</generateApiDocumentation>
+              <generateModelDocumentation>false</generateModelDocumentation>
+
+              <configOptions>
+                <useLombok>true</useLombok>
+                <annotationLibrary>lombok</annotationLibrary>
+                <generateModelTests>false</generateModelTests>
+                <useSpringBoot3>true</useSpringBoot3>
+                <sourceFolder>src/gen/java/main</sourceFolder>
+                <apiPackage>dev.vsviniciuslima.client.api</apiPackage>
+                <modelPackage>dev.vsviniciuslima.client.model</modelPackage>
+                <invokerPackage>dev.vsviniciuslima.client</invokerPackage>
+                <dateLibrary>java8</dateLibrary>
+                <hideGenerationTimestamp>true</hideGenerationTimestamp>
+              </configOptions>
+              <output>${project.build.directory}/generated-sources/core-client</output>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

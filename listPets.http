@@ -1,0 +1,11 @@
+###
+POST localhost:8081/api/pets
+Content-Type: application/json
+fail: true
+
+{
+  "name": "Teddy"
+}
+
+
+
