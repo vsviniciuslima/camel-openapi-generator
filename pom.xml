@@ -177,13 +177,13 @@
           <artifactId>camel-openapi-java-starter</artifactId>
       </dependency>
 
-      <!-- OpenAPI Generator para criar modelos a partir das especificações -->
-      <dependency>
-          <groupId>org.openapitools</groupId>
-          <artifactId>openapi-generator-maven-plugin</artifactId>
-          <version>6.2.1</version>
-          <scope>provided</scope>
-      </dependency>
+<!--      &lt;!&ndash; OpenAPI Generator para criar modelos a partir das especificações &ndash;&gt;-->
+<!--      <dependency>-->
+<!--          <groupId>org.openapitools</groupId>-->
+<!--          <artifactId>openapi-generator-maven-plugin</artifactId>-->
+<!--          <version>6.2.1</version>-->
+<!--          <scope>provided</scope>-->
+<!--      </dependency>-->
 
       <!-- https://mvnrepository.com/artifact/org.apache.camel/camel-rest-starter -->
       <dependency>
@@ -237,7 +237,7 @@
       <plugin>
         <groupId>org.openapitools</groupId>
         <artifactId>openapi-generator-maven-plugin</artifactId>
-        <version>7.12.0</version>
+        <version>7.13.0</version>
         <executions>
           <execution>
             <id>generate-openapi-client</id>
@@ -245,10 +245,11 @@
               <goal>generate</goal>
             </goals>
             <configuration>
+              <skip>false</skip>
               <skipValidateSpec>true</skipValidateSpec>
               <inputSpec>${project.basedir}/src/main/resources/api-core.yaml</inputSpec>
               <generatorName>java</generatorName>
-              <library>restclient</library>
+              <library>resttemplate</library>
               <generateApiTests>false</generateApiTests>
               <generateModelTests>false</generateModelTests>
               <generateApiDocumentation>false</generateApiDocumentation>
@@ -256,7 +257,6 @@
 
               <configOptions>
                 <useLombok>true</useLombok>
-                <annotationLibrary>lombok</annotationLibrary>
                 <generateModelTests>false</generateModelTests>
                 <useSpringBoot3>true</useSpringBoot3>
                 <sourceFolder>src/gen/java/main</sourceFolder>
@@ -265,8 +265,50 @@
                 <invokerPackage>dev.vsviniciuslima.client</invokerPackage>
                 <dateLibrary>java8</dateLibrary>
                 <hideGenerationTimestamp>true</hideGenerationTimestamp>
+                <basePackage>${project.groupId}</basePackage>
               </configOptions>
               <output>${project.build.directory}/generated-sources/core-client</output>
+            </configuration>
+          </execution>
+          <execution>
+            <id>generate-openapi-server</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+<!--              <configHelp>true</configHelp>-->
+              <skip>false</skip>
+              <skipValidateSpec>true</skipValidateSpec>
+<!--              <templateResourcePath>${project.basedir}/src/main/resources/openapi/templates/java-camel</templateResourcePath>-->
+<!--              <templateDirectory>${project.basedir}/src/main/resources/openapi/templates</templateDirectory>-->
+              <inputSpec>${project.basedir}/src/main/resources/api-core.yaml</inputSpec>
+
+              <generateSupportingFiles>true</generateSupportingFiles>
+              <generatorName>java-camel</generatorName>
+
+              <generateApiTests>false</generateApiTests>
+              <generateModelTests>false</generateModelTests>
+              <generateApiDocumentation>false</generateApiDocumentation>
+              <generateModelDocumentation>false</generateModelDocumentation>
+
+              <globalProperties>
+<!--                <debugSupportingFiles>true</debugSupportingFiles>-->
+
+              </globalProperties>
+              <configOptions>
+<!--                <sourceFolder>src/gen/java/main</sourceFolder>-->
+<!--                <apiPackage>dev.vsviniciuslima.client.api</apiPackage>-->
+<!--                <modelPackage>dev.vsviniciuslima.client.model</modelPackage>-->
+<!--                <invokerPackage>dev.vsviniciuslima.client</invokerPackage>-->
+
+                <useLombok>true</useLombok>
+                <generateModelTests>false</generateModelTests>
+                <useJakartaEe>true</useJakartaEe>
+                <dateLibrary>java8</dateLibrary>
+                <hideGenerationTimestamp>true</hideGenerationTimestamp>
+<!--                <basePackage>${project.groupId}</basePackage>-->
+              </configOptions>
+<!--              <output>${project.build.directory}/generated-sources/core-client</output>-->
             </configuration>
           </execution>
         </executions>
