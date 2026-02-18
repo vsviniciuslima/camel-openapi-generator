@@ -21,7 +21,22 @@
   </properties>
 
   <dependencyManagement>
+
     <dependencies>
+    <!--    camel api e camel support-->
+
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-api</artifactId>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-support</artifactId>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-endpointdsl</artifactId>
+      </dependency>
       <!-- Spring Boot BOM -->
       <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -43,6 +58,19 @@
 
   <dependencies>
 
+    <dependency>
+      <groupId>javax.annotation</groupId>
+      <artifactId>javax.annotation-api</artifactId>
+      <version>1.2</version>
+    </dependency>
+
+    <!-- Camel Endpoint DSL -->
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-endpointdsl</artifactId>
+      <version>${camel.version}</version>
+    </dependency>
+
       <!-- Camel Jackson para processamento JSON -->
       <dependency>
           <groupId>org.apache.camel.springboot</groupId>
@@ -61,10 +89,11 @@
       <artifactId>camel-http-starter</artifactId>
     </dependency>
 
+    <!-- Force Camel Support version to avoid conflicts -->
     <dependency>
       <groupId>org.apache.camel</groupId>
-      <artifactId>camel-api</artifactId>
-      <version>4.4.3</version>
+      <artifactId>camel-support</artifactId>
+      <version>${camel.version}</version>
     </dependency>
 
     <!-- Spring Boot -->
@@ -72,7 +101,6 @@
     <dependency>
       <groupId>org.apache.camel.springboot</groupId>
       <artifactId>camel-servlet-starter</artifactId>
-<!--      <version>3.7.2</version>-->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -131,6 +159,10 @@
       <groupId>org.apache.camel.springboot</groupId>
       <artifactId>camel-stream-starter</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.apache.camel.springboot</groupId>
+      <artifactId>camel-rest-starter</artifactId>
+    </dependency>
 
     <!-- Test -->
     <dependency>
@@ -185,12 +217,13 @@
 <!--          <scope>provided</scope>-->
 <!--      </dependency>-->
 
-      <!-- https://mvnrepository.com/artifact/org.apache.camel/camel-rest-starter -->
-      <dependency>
-          <groupId>org.apache.camel</groupId>
-          <artifactId>camel-rest-starter</artifactId>
-          <version>3.0.0-RC3</version>
-      </dependency>
+<!--    ja vem do camel-spring-boot-starter-->
+<!--      &lt;!&ndash; https://mvnrepository.com/artifact/org.apache.camel/camel-rest-starter &ndash;&gt;-->
+<!--      <dependency>-->
+<!--          <groupId>org.apache.camel</groupId>-->
+<!--          <artifactId>camel-rest-starter</artifactId>-->
+<!--          <version>3.0.0-RC3</version>-->
+<!--      </dependency>-->
 
       <!-- Utilitários -->
       <dependency>
@@ -216,6 +249,15 @@
         <configuration>
           <release>17</release>
         </configuration>
+        <executions>
+          <execution>
+            <id>recompile</id>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <phase>process-classes</phase>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.springframework.boot</groupId>
@@ -245,6 +287,8 @@
               <goal>generate</goal>
             </goals>
             <configuration>
+              <templateResourcePath>${project.basedir}/src/templates</templateResourcePath>
+
               <skip>false</skip>
               <skipValidateSpec>true</skipValidateSpec>
               <inputSpec>${project.basedir}/src/main/resources/api-core.yaml</inputSpec>
@@ -256,16 +300,34 @@
               <generateModelDocumentation>false</generateModelDocumentation>
 
               <configOptions>
+
+                <!-- Lombok para código limpo -->
                 <useLombok>true</useLombok>
-                <generateModelTests>false</generateModelTests>
+
+                <!-- Spring Boot 3 + Jakarta EE -->
                 <useSpringBoot3>true</useSpringBoot3>
-                <sourceFolder>src/gen/java/main</sourceFolder>
+                <useJakartaEe>true</useJakartaEe>
+
+                <!-- Java 8 Date/Time API -->
+                <dateLibrary>java8</dateLibrary>
+
+                <!-- Pacotes -->
                 <apiPackage>dev.vsviniciuslima.client.api</apiPackage>
                 <modelPackage>dev.vsviniciuslima.client.model</modelPackage>
                 <invokerPackage>dev.vsviniciuslima.client</invokerPackage>
-                <dateLibrary>java8</dateLibrary>
+
+                <!-- Melhorias de legibilidade -->
                 <hideGenerationTimestamp>true</hideGenerationTimestamp>
-                <basePackage>${project.groupId}</basePackage>
+                <serializableModel>true</serializableModel>
+                <withXml>false</withXml>
+
+                <!-- Anotações Lombok nos Models -->
+                <additionalModelTypeAnnotations>
+                  @lombok.Builder @lombok.AllArgsConstructor
+                </additionalModelTypeAnnotations>
+
+                <generateModelTests>false</generateModelTests>
+
               </configOptions>
               <output>${project.build.directory}/generated-sources/core-client</output>
             </configuration>
@@ -276,8 +338,8 @@
               <goal>generate</goal>
             </goals>
             <configuration>
-<!--              <configHelp>true</configHelp>-->
-              <skip>false</skip>
+              <configHelp>true</configHelp>
+              <skip>true</skip>
               <skipValidateSpec>true</skipValidateSpec>
 <!--              <templateResourcePath>${project.basedir}/src/main/resources/openapi/templates/java-camel</templateResourcePath>-->
 <!--              <templateDirectory>${project.basedir}/src/main/resources/openapi/templates</templateDirectory>-->
@@ -310,6 +372,21 @@
               </configOptions>
 <!--              <output>${project.build.directory}/generated-sources/core-client</output>-->
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-component-maven-plugin</artifactId>
+        <version>${camel.version}</version>
+        <executions>
+          <execution>
+            <id>generate</id>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <phase>process-classes</phase>
           </execution>
         </executions>
       </plugin>

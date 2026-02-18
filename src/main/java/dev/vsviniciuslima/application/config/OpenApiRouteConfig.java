@@ -16,10 +16,10 @@ public class OpenApiRouteConfig {
     @Value("classpath:specs/third-party-api.yaml")
     private Resource openapiSpec;
 
-    @Value("${third.party.api.host:localhost}")
+    @Value("${api.host:localhost}")
     private String apiHost;
 
-    @Value("${third.party.api.port:8080}")
+    @Value("${api.port:8080}")
     private String apiPort;
 
     @Bean

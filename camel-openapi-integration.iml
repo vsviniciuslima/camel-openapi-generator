@@ -2,6 +2,8 @@
 <module version="4">
   <component name="AdditionalModuleElements">
     <content url="file://$MODULE_DIR$" dumb="true">
+      <sourceFolder url="file://$MODULE_DIR$/src/generated/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/generated/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/target/generated-sources/core-client/src" isTestSource="false" />
     </content>
   </component>

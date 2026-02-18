@@ -1,0 +1,2297 @@
+openapi: 3.0.3
+info:
+  contact:
+    email: vsviniciuslima@gmail.com
+    name: Vinicius Santana
+    url: https://vsviniciuslima.dev/contact
+  description: Plataforma de simulados
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: Your terms here
+  title: E-Simulados
+  version: 1.0.1
+servers:
+- url: /
+tags:
+- name: Disciplines
+- name: ExamAttempts
+- name: Exams
+- name: Pets
+- name: Questions
+- name: Topics
+paths:
+  /disciplines:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: active
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          format: int64
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: name
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: namedQuery
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 0
+          format: int32
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: size
+        required: false
+        schema:
+          default: 20
+          format: int32
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: sort
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Discipline'
+                type: array
+          description: OK
+      tags:
+      - Disciplines
+      x-accepts:
+      - application/json
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDiscipline'
+        description: Simulado a ser criado
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_disciplines_post_200_response'
+          description: Disciplina criada
+      summary: Criar disciplina
+      tags:
+      - Disciplines
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /disciplines/count:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                format: int64
+                type: integer
+          description: OK
+      tags:
+      - Disciplines
+      x-accepts:
+      - application/json
+  /disciplines/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "204": {}
+      tags:
+      - Disciplines
+      x-accepts:
+      - application/json
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Discipline'
+          description: OK
+      tags:
+      - Disciplines
+      x-accepts:
+      - application/json
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Discipline'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Discipline'
+      tags:
+      - Disciplines
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /errors/{id}:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_errors__id__get_200_response'
+          description: Detalhes do erro
+      security:
+      - api_key: []
+      summary: Consultar detalhes do erro
+      tags:
+      - Pets
+      x-accepts:
+      - application/json
+  /exam-attempts:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: active
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - explode: true
+        in: query
+        name: examId
+        required: false
+        schema:
+          format: int64
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: examVersion
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          format: int64
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: namedQuery
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 0
+          format: int32
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: score
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: size
+        required: false
+        schema:
+          default: 20
+          format: int32
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: sort
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - explode: true
+        in: query
+        name: userId
+        required: false
+        schema:
+          format: int64
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ExamAttempt'
+                type: array
+          description: OK
+      tags:
+      - ExamAttempts
+      x-accepts:
+      - application/json
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AttemptExamDTO'
+        description: Simulado a ser criado
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_exam_attempts_post_200_response'
+          description: A tentativa de simulado
+      summary: Tentativa
+      tags:
+      - ExamAttempts
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /exam-attempts/count:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                format: int64
+                type: integer
+          description: OK
+      tags:
+      - ExamAttempts
+      x-accepts:
+      - application/json
+  /exam-attempts/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "204": {}
+      tags:
+      - ExamAttempts
+      x-accepts:
+      - application/json
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExamAttempt'
+          description: OK
+      tags:
+      - ExamAttempts
+      x-accepts:
+      - application/json
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExamAttempt'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExamAttempt'
+      tags:
+      - ExamAttempts
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /exams:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: active
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - explode: true
+        in: query
+        name: author
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: authorId
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: description
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: discipline.id
+        required: false
+        schema:
+          format: int64
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          format: int64
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: imageUrl
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: name
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: namedQuery
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 0
+          format: int32
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: size
+        required: false
+        schema:
+          default: 20
+          format: int32
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: sort
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - explode: true
+        in: query
+        name: topic.id
+        required: false
+        schema:
+          format: int64
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: version
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: year
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Exam'
+                type: array
+          description: OK
+      tags:
+      - Exams
+      x-accepts:
+      - application/json
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateExamDTO'
+        description: Simulado a ser criado
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_exams_post_200_response'
+          description: Simulado criado
+      summary: Criar simulado
+      tags:
+      - Exams
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /exams/count:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                format: int64
+                type: integer
+          description: OK
+      tags:
+      - Exams
+      x-accepts:
+      - application/json
+  /exams/{examId}/questions:
+    post:
+      parameters:
+      - explode: false
+        in: path
+        name: examId
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddExamQuestion'
+      responses:
+        "200":
+          description: OK
+      tags:
+      - Exams
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /exams/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "204": {}
+      tags:
+      - Exams
+      x-accepts:
+      - application/json
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Exam'
+          description: OK
+      tags:
+      - Exams
+      x-accepts:
+      - application/json
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Exam'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Exam'
+      tags:
+      - Exams
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /pets:
+    post:
+      parameters:
+      - explode: true
+        in: query
+        name: fail
+        required: false
+        schema:
+          type: boolean
+        style: form
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePet'
+        description: Simulado a ser criado
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_pets_post_200_response'
+          description: Pet cadastrado
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_pets_post_400_response'
+          description: Erro no cadastro
+      summary: Cadastrar pet
+      tags:
+      - Pets
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /questions:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: authorId
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: correctAlternative
+        required: false
+        schema:
+          format: byte
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: discipline.id
+        required: false
+        schema:
+          format: int64
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: explanation
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          format: int64
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: namedQuery
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 0
+          format: int32
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: size
+        required: false
+        schema:
+          default: 20
+          format: int32
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: sort
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      - explode: true
+        in: query
+        name: source
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: sourceUrl
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: statement
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: topic.id
+        required: false
+        schema:
+          format: int64
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: year
+        required: false
+        schema:
+          format: int32
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Question'
+                type: array
+          description: OK
+      tags:
+      - Questions
+      x-accepts:
+      - application/json
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateQuestionDTO'
+        description: Lista de presentes a serem criados
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_questions_post_200_response'
+          description: Questão criada
+      summary: Criar questão
+      tags:
+      - Questions
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /questions/count:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                format: int64
+                type: integer
+          description: OK
+      tags:
+      - Questions
+      x-accepts:
+      - application/json
+  /questions/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "204": {}
+      tags:
+      - Questions
+      x-accepts:
+      - application/json
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+          description: OK
+      tags:
+      - Questions
+      x-accepts:
+      - application/json
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Question'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Question'
+      tags:
+      - Questions
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /questions/{id}/comments:
+    post:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCommentDTO'
+        description: Comentário
+      responses:
+        "200":
+          description: OK
+      tags:
+      - Questions
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /questions/{id}/comments/{commentId}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: commentId
+        required: true
+        schema:
+          $ref: '#/components/schemas/UUID'
+        style: simple
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          description: OK
+      tags:
+      - Questions
+      x-accepts:
+      - application/json
+  /topics:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: active
+        required: false
+        schema:
+          type: boolean
+        style: form
+      - explode: true
+        in: query
+        name: discipline.id
+        required: false
+        schema:
+          format: int64
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: id
+        required: false
+        schema:
+          format: int64
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: name
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: namedQuery
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 0
+          format: int32
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: size
+        required: false
+        schema:
+          default: 20
+          format: int32
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: sort
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Topic'
+                type: array
+          description: OK
+      tags:
+      - Topics
+      x-accepts:
+      - application/json
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTopic'
+        description: Tópico a ser criado
+      responses:
+        "200":
+          description: OK
+      tags:
+      - Topics
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /topics/count:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                format: int64
+                type: integer
+          description: OK
+      tags:
+      - Topics
+      x-accepts:
+      - application/json
+  /topics/{id}:
+    delete:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "204": {}
+      tags:
+      - Topics
+      x-accepts:
+      - application/json
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Topic'
+          description: OK
+      tags:
+      - Topics
+      x-accepts:
+      - application/json
+    put:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int64
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Topic'
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Topic'
+      tags:
+      - Topics
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+components:
+  schemas:
+    AddExamQuestion:
+      example:
+        questionsIds:
+        - questionsIds
+        - questionsIds
+      properties:
+        questionsIds:
+          items:
+            type: string
+          type: array
+      type: object
+    Answer:
+      example:
+        alternativeId: alternativeId
+        questionId: 2
+      properties:
+        questionId:
+          format: int64
+          type: integer
+        alternativeId:
+          format: byte
+          type: string
+      type: object
+    AttemptExamDTO:
+      example:
+        examId: 0
+        answers:
+        - alternativeId: alternativeId
+          questionId: 2
+        - alternativeId: alternativeId
+          questionId: 2
+        userId: 6
+      properties:
+        examId:
+          format: int64
+          type: integer
+        userId:
+          format: int64
+          type: integer
+        answers:
+          items:
+            $ref: '#/components/schemas/Answer'
+          type: array
+      type: object
+    Comment:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        author: author
+        active: true
+        authorId: authorId
+        uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        content: content
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        content:
+          type: string
+        author:
+          type: string
+        authorId:
+          type: string
+        uuid:
+          format: uuid
+          pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+          type: string
+        active:
+          type: boolean
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+      type: object
+    CreateCommentDTO:
+      example:
+        author: author
+        authorId: authorId
+        content: content
+      properties:
+        content:
+          type: string
+        author:
+          type: string
+        authorId:
+          type: string
+      type: object
+    CreateDiscipline:
+      example:
+        name: name
+      properties:
+        name:
+          type: string
+      type: object
+    CreateExamDTO:
+      example:
+        difficulty: EASY
+        topicId: 1
+        year: 0
+        author: author
+        imageUrl: imageUrl
+        name: name
+        examType: VESTIBULAR
+        description: description
+        disciplineId: 6
+        questionIds:
+        - questionIds
+        - questionIds
+        authorId: authorId
+        tags:
+        - tags
+        - tags
+      properties:
+        questionIds:
+          items:
+            type: string
+          type: array
+        author:
+          type: string
+        authorId:
+          type: string
+        examType:
+          $ref: '#/components/schemas/ExamType'
+        difficulty:
+          $ref: '#/components/schemas/Difficulty'
+        name:
+          type: string
+        description:
+          type: string
+        imageUrl:
+          type: string
+        year:
+          format: int32
+          type: integer
+        tags:
+          items:
+            type: string
+          type: array
+        disciplineId:
+          format: int64
+          type: integer
+        topicId:
+          format: int64
+          type: integer
+      required:
+      - disciplineId
+      - examType
+      - name
+      - topicId
+      type: object
+    CreatePet:
+      example:
+        name: name
+      properties:
+        name:
+          type: string
+      type: object
+    CreateQuestionAlternativeDTO:
+      example:
+        imageUrls:
+        - imageUrls
+        - imageUrls
+        label: label
+        content: content
+      properties:
+        label:
+          type: string
+        content:
+          type: string
+        imageUrls:
+          items:
+            type: string
+          type: array
+      required:
+      - content
+      type: object
+    CreateQuestionDTO:
+      example:
+        year: 1
+        questionAlternatives:
+        - imageUrls:
+          - imageUrls
+          - imageUrls
+          label: label
+          content: content
+        - imageUrls:
+          - imageUrls
+          - imageUrls
+          label: label
+          content: content
+        examType: VESTIBULAR
+        disciplineId: 0
+        source: source
+        explanation: explanation
+        authorId: authorId
+        tags:
+        - tags
+        - tags
+        difficulty: EASY
+        sourceUrl: sourceUrl
+        topicId: 6
+        correctAlternative: correctAlternative
+        statement: statement
+      properties:
+        statement:
+          type: string
+        explanation:
+          type: string
+        difficulty:
+          $ref: '#/components/schemas/Difficulty'
+        examType:
+          $ref: '#/components/schemas/ExamType'
+        disciplineId:
+          format: int64
+          type: integer
+        topicId:
+          format: int64
+          type: integer
+        year:
+          format: int32
+          type: integer
+        source:
+          type: string
+        sourceUrl:
+          type: string
+        authorId:
+          type: string
+        tags:
+          items:
+            type: string
+          type: array
+        questionAlternatives:
+          items:
+            $ref: '#/components/schemas/CreateQuestionAlternativeDTO'
+          type: array
+        correctAlternative:
+          format: byte
+          type: string
+      required:
+      - correctAlternative
+      - difficulty
+      - disciplineId
+      - examType
+      - questionAlternatives
+      - statement
+      - topicId
+      type: object
+    CreateTopic:
+      example:
+        name: name
+        disciplineId: 0
+      properties:
+        name:
+          type: string
+        disciplineId:
+          format: int64
+          type: integer
+      type: object
+    Difficulty:
+      enum:
+      - EASY
+      - MEDIUM
+      - HARD
+      type: string
+    Discipline:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        name: name
+        active: true
+        id: 0
+        uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        id:
+          format: int64
+          type: integer
+        name:
+          type: string
+        active:
+          type: boolean
+        uuid:
+          format: uuid
+          pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+      type: object
+    Exam:
+      example:
+        year: 5
+        author: author
+        questions:
+        - comments:
+          - createdAt: 2000-01-23T04:56:07.000+00:00
+            author: author
+            active: true
+            authorId: authorId
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            content: content
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          - createdAt: 2000-01-23T04:56:07.000+00:00
+            author: author
+            active: true
+            authorId: authorId
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            content: content
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          year: 5
+          examType: VESTIBULAR
+          discipline:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            name: name
+            active: true
+            id: 0
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          source: source
+          explanation: explanation
+          authorId: authorId
+          tags:
+          - tags
+          - tags
+          difficulty: EASY
+          sourceUrl: sourceUrl
+          correctAlternative: correctAlternative
+          statement: statement
+          topic:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            name: name
+            active: true
+            id: 1
+            discipline:
+              createdAt: 2000-01-23T04:56:07.000+00:00
+              name: name
+              active: true
+              id: 0
+              uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              updatedAt: 2000-01-23T04:56:07.000+00:00
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          alternatives:
+          - imageUrls:
+            - imageUrls
+            - imageUrls
+            label: label
+            content: content
+          - imageUrls:
+            - imageUrls
+            - imageUrls
+            label: label
+            content: content
+          id: 6
+        - comments:
+          - createdAt: 2000-01-23T04:56:07.000+00:00
+            author: author
+            active: true
+            authorId: authorId
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            content: content
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          - createdAt: 2000-01-23T04:56:07.000+00:00
+            author: author
+            active: true
+            authorId: authorId
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            content: content
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          year: 5
+          examType: VESTIBULAR
+          discipline:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            name: name
+            active: true
+            id: 0
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          source: source
+          explanation: explanation
+          authorId: authorId
+          tags:
+          - tags
+          - tags
+          difficulty: EASY
+          sourceUrl: sourceUrl
+          correctAlternative: correctAlternative
+          statement: statement
+          topic:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            name: name
+            active: true
+            id: 1
+            discipline:
+              createdAt: 2000-01-23T04:56:07.000+00:00
+              name: name
+              active: true
+              id: 0
+              uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              updatedAt: 2000-01-23T04:56:07.000+00:00
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          alternatives:
+          - imageUrls:
+            - imageUrls
+            - imageUrls
+            label: label
+            content: content
+          - imageUrls:
+            - imageUrls
+            - imageUrls
+            label: label
+            content: content
+          id: 6
+        examType: null
+        description: description
+        active: true
+        discipline:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          name: name
+          active: true
+          id: 0
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        authorId: authorId
+        version: 2
+        uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        tags:
+        - tags
+        - tags
+        difficulty: null
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        imageUrl: imageUrl
+        name: name
+        topic:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          name: name
+          active: true
+          id: 1
+          discipline:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            name: name
+            active: true
+            id: 0
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        id: 0
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        id:
+          format: int64
+          type: integer
+        questions:
+          items:
+            $ref: '#/components/schemas/Question'
+          type: array
+        author:
+          type: string
+        authorId:
+          type: string
+        examType:
+          $ref: '#/components/schemas/ExamType'
+        difficulty:
+          $ref: '#/components/schemas/Difficulty'
+        name:
+          type: string
+        description:
+          type: string
+        imageUrl:
+          type: string
+        year:
+          format: int32
+          type: integer
+        tags:
+          items:
+            type: string
+          type: array
+        discipline:
+          $ref: '#/components/schemas/Discipline'
+        topic:
+          $ref: '#/components/schemas/Topic'
+        version:
+          format: int32
+          type: integer
+        active:
+          type: boolean
+        uuid:
+          format: uuid
+          pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+      type: object
+    ExamAttempt:
+      example:
+        score: 5
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        examId: 6
+        answers:
+        - alternativeId: alternativeId
+          questionId: 2
+        - alternativeId: alternativeId
+          questionId: 2
+        active: true
+        examVersion: 5
+        id: 0
+        userId: 1
+        uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        id:
+          format: int64
+          type: integer
+        examId:
+          format: int64
+          type: integer
+        userId:
+          format: int64
+          type: integer
+        examVersion:
+          format: int32
+          type: integer
+        score:
+          format: int32
+          type: integer
+        answers:
+          items:
+            $ref: '#/components/schemas/Answer'
+          type: array
+        active:
+          type: boolean
+        uuid:
+          format: uuid
+          pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+      type: object
+    ExamType:
+      enum:
+      - VESTIBULAR
+      - CONCURSO
+      type: string
+    LocalDateTime:
+      format: date-time
+      type: string
+    Question:
+      example:
+        comments:
+        - createdAt: 2000-01-23T04:56:07.000+00:00
+          author: author
+          active: true
+          authorId: authorId
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          content: content
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        - createdAt: 2000-01-23T04:56:07.000+00:00
+          author: author
+          active: true
+          authorId: authorId
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          content: content
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        year: 5
+        examType: VESTIBULAR
+        discipline:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          name: name
+          active: true
+          id: 0
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        source: source
+        explanation: explanation
+        authorId: authorId
+        tags:
+        - tags
+        - tags
+        difficulty: EASY
+        sourceUrl: sourceUrl
+        correctAlternative: correctAlternative
+        statement: statement
+        topic:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          name: name
+          active: true
+          id: 1
+          discipline:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            name: name
+            active: true
+            id: 0
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        alternatives:
+        - imageUrls:
+          - imageUrls
+          - imageUrls
+          label: label
+          content: content
+        - imageUrls:
+          - imageUrls
+          - imageUrls
+          label: label
+          content: content
+        id: 6
+      properties:
+        id:
+          format: int64
+          type: integer
+        statement:
+          type: string
+        explanation:
+          type: string
+        difficulty:
+          $ref: '#/components/schemas/Difficulty'
+        examType:
+          $ref: '#/components/schemas/ExamType'
+        discipline:
+          $ref: '#/components/schemas/Discipline'
+        topic:
+          $ref: '#/components/schemas/Topic'
+        year:
+          format: int32
+          type: integer
+        source:
+          type: string
+        sourceUrl:
+          type: string
+        authorId:
+          type: string
+        tags:
+          items:
+            type: string
+          type: array
+        comments:
+          items:
+            $ref: '#/components/schemas/Comment'
+          type: array
+        alternatives:
+          items:
+            $ref: '#/components/schemas/QuestionAlternative'
+          type: array
+        correctAlternative:
+          format: byte
+          type: string
+      type: object
+    QuestionAlternative:
+      example:
+        imageUrls:
+        - imageUrls
+        - imageUrls
+        label: label
+        content: content
+      properties:
+        label:
+          type: string
+        imageUrls:
+          items:
+            type: string
+          type: array
+        content:
+          type: string
+      type: object
+    Topic:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        name: name
+        active: true
+        id: 1
+        discipline:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          name: name
+          active: true
+          id: 0
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        id:
+          format: int64
+          type: integer
+        active:
+          type: boolean
+        uuid:
+          format: uuid
+          pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+        discipline:
+          $ref: '#/components/schemas/Discipline'
+        name:
+          type: string
+      type: object
+    UUID:
+      format: uuid
+      pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+      type: string
+    _disciplines_post_200_response:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        name: name
+        active: true
+        id: 0
+        uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        id:
+          format: int64
+          type: integer
+        name:
+          type: string
+        active:
+          type: boolean
+        uuid:
+          format: uuid
+          pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+      type: object
+    _errors__id__get_200_response:
+      example:
+        reason: reason
+        details: details
+        uuid: uuid
+      properties:
+        reason:
+          type: string
+        details:
+          type: string
+        uuid:
+          type: string
+      type: object
+    _exam_attempts_post_200_response:
+      example:
+        score: 5
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        examId: 6
+        answers:
+        - alternativeId: alternativeId
+          questionId: 2
+        - alternativeId: alternativeId
+          questionId: 2
+        active: true
+        examVersion: 5
+        id: 0
+        userId: 1
+        uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        id:
+          format: int64
+          type: integer
+        examId:
+          format: int64
+          type: integer
+        userId:
+          format: int64
+          type: integer
+        examVersion:
+          format: int32
+          type: integer
+        score:
+          format: int32
+          type: integer
+        answers:
+          items:
+            $ref: '#/components/schemas/Answer'
+          type: array
+        active:
+          type: boolean
+        uuid:
+          format: uuid
+          pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+      type: object
+    _exams_post_200_response:
+      example:
+        year: 6
+        author: author
+        questions:
+        - comments:
+          - createdAt: 2000-01-23T04:56:07.000+00:00
+            author: author
+            active: true
+            authorId: authorId
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            content: content
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          - createdAt: 2000-01-23T04:56:07.000+00:00
+            author: author
+            active: true
+            authorId: authorId
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            content: content
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          year: 5
+          examType: VESTIBULAR
+          discipline:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            name: name
+            active: true
+            id: 0
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          source: source
+          explanation: explanation
+          authorId: authorId
+          tags:
+          - tags
+          - tags
+          difficulty: EASY
+          sourceUrl: sourceUrl
+          correctAlternative: correctAlternative
+          statement: statement
+          topic:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            name: name
+            active: true
+            id: 1
+            discipline:
+              createdAt: 2000-01-23T04:56:07.000+00:00
+              name: name
+              active: true
+              id: 0
+              uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              updatedAt: 2000-01-23T04:56:07.000+00:00
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          alternatives:
+          - imageUrls:
+            - imageUrls
+            - imageUrls
+            label: label
+            content: content
+          - imageUrls:
+            - imageUrls
+            - imageUrls
+            label: label
+            content: content
+          id: 6
+        - comments:
+          - createdAt: 2000-01-23T04:56:07.000+00:00
+            author: author
+            active: true
+            authorId: authorId
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            content: content
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          - createdAt: 2000-01-23T04:56:07.000+00:00
+            author: author
+            active: true
+            authorId: authorId
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            content: content
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          year: 5
+          examType: VESTIBULAR
+          discipline:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            name: name
+            active: true
+            id: 0
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          source: source
+          explanation: explanation
+          authorId: authorId
+          tags:
+          - tags
+          - tags
+          difficulty: EASY
+          sourceUrl: sourceUrl
+          correctAlternative: correctAlternative
+          statement: statement
+          topic:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            name: name
+            active: true
+            id: 1
+            discipline:
+              createdAt: 2000-01-23T04:56:07.000+00:00
+              name: name
+              active: true
+              id: 0
+              uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+              updatedAt: 2000-01-23T04:56:07.000+00:00
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          alternatives:
+          - imageUrls:
+            - imageUrls
+            - imageUrls
+            label: label
+            content: content
+          - imageUrls:
+            - imageUrls
+            - imageUrls
+            label: label
+            content: content
+          id: 6
+        examType: VESTIBULAR
+        description: description
+        active: true
+        discipline:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          name: name
+          active: true
+          id: 0
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        authorId: authorId
+        version: 1
+        uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        tags:
+        - tags
+        - tags
+        difficulty: EASY
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        imageUrl: imageUrl
+        name: name
+        topic:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          name: name
+          active: true
+          id: 1
+          discipline:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            name: name
+            active: true
+            id: 0
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        id: 0
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        id:
+          format: int64
+          type: integer
+        questions:
+          items:
+            $ref: '#/components/schemas/Question'
+          type: array
+        author:
+          type: string
+        authorId:
+          type: string
+        examType:
+          $ref: '#/components/schemas/ExamType'
+        difficulty:
+          $ref: '#/components/schemas/Difficulty'
+        name:
+          type: string
+        description:
+          type: string
+        imageUrl:
+          type: string
+        year:
+          format: int32
+          type: integer
+        tags:
+          items:
+            type: string
+          type: array
+        discipline:
+          $ref: '#/components/schemas/Discipline'
+        topic:
+          $ref: '#/components/schemas/Topic'
+        version:
+          format: int32
+          type: integer
+        active:
+          type: boolean
+        uuid:
+          format: uuid
+          pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+      type: object
+    _pets_post_200_response:
+      example:
+        name: name
+        id: 0
+      properties:
+        name:
+          type: string
+        id:
+          format: int64
+          type: integer
+      type: object
+    _pets_post_400_response:
+      example:
+        errorId: errorId
+      properties:
+        errorId:
+          type: string
+      type: object
+    _questions_post_200_response:
+      example:
+        comments:
+        - createdAt: 2000-01-23T04:56:07.000+00:00
+          author: author
+          active: true
+          authorId: authorId
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          content: content
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        - createdAt: 2000-01-23T04:56:07.000+00:00
+          author: author
+          active: true
+          authorId: authorId
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          content: content
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        year: 6
+        examType: VESTIBULAR
+        discipline:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          name: name
+          active: true
+          id: 0
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        source: source
+        explanation: explanation
+        authorId: authorId
+        tags:
+        - tags
+        - tags
+        difficulty: EASY
+        sourceUrl: sourceUrl
+        correctAlternative: correctAlternative
+        statement: statement
+        topic:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          name: name
+          active: true
+          id: 1
+          discipline:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            name: name
+            active: true
+            id: 0
+            uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          uuid: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        alternatives:
+        - imageUrls:
+          - imageUrls
+          - imageUrls
+          label: label
+          content: content
+        - imageUrls:
+          - imageUrls
+          - imageUrls
+          label: label
+          content: content
+        id: 0
+      properties:
+        id:
+          format: int64
+          type: integer
+        statement:
+          type: string
+        explanation:
+          type: string
+        difficulty:
+          $ref: '#/components/schemas/Difficulty'
+        examType:
+          $ref: '#/components/schemas/ExamType'
+        discipline:
+          $ref: '#/components/schemas/Discipline'
+        topic:
+          $ref: '#/components/schemas/Topic'
+        year:
+          format: int32
+          type: integer
+        source:
+          type: string
+        sourceUrl:
+          type: string
+        authorId:
+          type: string
+        tags:
+          items:
+            type: string
+          type: array
+        comments:
+          items:
+            $ref: '#/components/schemas/Comment'
+          type: array
+        alternatives:
+          items:
+            $ref: '#/components/schemas/QuestionAlternative'
+          type: array
+        correctAlternative:
+          format: byte
+          type: string
+      type: object
+  securitySchemes:
+    Bearer:
+      bearerFormat: JWT
+      description: "Colocar o TOKEN, sem o bearer no início"
+      scheme: bearer
+      type: http
+    api_key:
+      in: header
+      name: api_key
+      type: apiKey
+

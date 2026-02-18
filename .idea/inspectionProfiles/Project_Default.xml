@@ -8,6 +8,7 @@
       <option name="customHeaders">
         <set>
           <option value="fail" />
+          <option value="api-key" />
         </set>
       </option>
     </inspection_tool>

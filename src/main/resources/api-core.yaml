@@ -188,6 +188,8 @@ paths:
                     type: string
                   uuid:
                     type: string
+      security:
+        - api_key: [ ]
   /exam-attempts:
     get:
       tags:
@@ -1350,3 +1352,15 @@ components:
       format: uuid
       pattern: "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}"
       type: string
+  securitySchemes:
+    Bearer:
+      type: http
+      description: Colocar o TOKEN, sem o bearer no início
+      scheme: bearer
+      bearerFormat: JWT
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
+  security:
+    - Bearer: []
